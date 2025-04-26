@@ -37,37 +37,98 @@ This section covers fundamental EC2 concepts and operations that are essential f
 
 
 
-- **EC2 Hibernate Hands On** (4 minutes)
-  - Practical implementation
-  - Configuration steps
-  - Testing hibernation
 
 ### 2. Networking
-- **Enhanced Networking** (4 minutes)
-  - Network performance optimization
-  - ENI configuration
-  - Best practices
+- **2.1 Enhanced Networking** (4 minutes)
+  - **ENA (Elastic Network Adapter)**:
+    - Công nghệ mạng nâng cao cho EC2 instances thế hệ mới
+    - Cung cấp hiệu suất mạng tốt hơn với độ trễ thấp
+    - Cải thiện kết nối giữa các EC2 instances trong cùng cluster
+    - Được sử dụng mặc định trên Amazon Linux 2
+    - Có sẵn cho các phiên bản EC2 thế hệ mới (ví dụ: t3.micro)
 
-- **Elastic IPs** (6 minutes)
-  - EIP concepts and usage
-  - Association and disassociation
-  - Cost considerations
+  - **EFA (Elastic Fabric Adapter)**:
+    - Phiên bản nâng cao của ENA, tối ưu cho HPC (High Performance Computing)
+    - Chỉ hoạt động trên Linux
+    - Cải thiện hiệu suất cho ứng dụng yêu cầu giao tiếp node nội bộ
+    - Sử dụng chuẩn MPI (Message Passing Interface)
+    - Tối ưu hóa truyền tải dữ liệu giữa các EC2 instances
 
-- **IP Address Charges in AWS** (6 minutes)
-  - Understanding IP pricing
-  - Cost optimization strategies
-  - Best practices
+  - **Cách hoạt động**:
+    - Yêu cầu EC2 instance thế hệ mới (ví dụ: t3.micro)
+    - Kiểm tra cài đặt ENA:
+      ```bash
+      modinfo ena
+      ethtool -i eth0
+      ```
+    - Đảm bảo driver ena được sử dụng
+
+  - **Demo**:
+    - So sánh phiên bản cũ (t2.micro) và mới (t3.micro)
+    - Kiểm tra cài đặt ENA trên Amazon Linux 2
+    - Xác minh khả năng mạng nâng cao trên t3.micro
+
+  - **Kết luận**:
+    - Sử dụng EC2 instance thế hệ mới (ví dụ: t3.micro)
+    - Sử dụng hệ điều hành Amazon Linux 2
+    - Kiểm tra và xác minh cài đặt ENA
+    - Tận dụng lợi ích của Enhanced Networking
+
 
 ### 3. Instance Placement
-- **EC2 Placement Groups** (6 minutes)
-  - Types of placement groups
-  - Use cases and benefits
-  - Configuration options
+- **3.1 EC2 Placement Groups** (6 minutes)
+  - **Cluster Placement Group**:
+    - Tất cả EC2 instances trong một Availability Zone (AZ)
+    - Phần cứng có độ trễ thấp và băng thông cao (10Gbps)
+    - Lợi ích:
+      - Hiệu suất mạng rất cao
+      - Độ trễ thấp
+      - Thông lượng cao
+    - Rủi ro:
+      - Nếu AZ gặp sự cố, tất cả instances sẽ bị ảnh hưởng
+    - Phù hợp cho:
+      - Công việc dữ liệu lớn
+      - Ứng dụng yêu cầu độ trễ thấp
+      - Ứng dụng cần thông lượng cao
 
-- **EC2 Placement Groups - Hands On** (2 minutes)
-  - Practical implementation
-  - Group creation and management
-  - Instance placement
+  - **Spread Placement Group**:
+    - EC2 instances phân phối trên phần cứng khác nhau ở nhiều AZ
+    - Giới hạn:
+      - Tối đa 7 instances mỗi AZ
+    - Lợi ích:
+      - Giảm thiểu rủi ro thất bại đồng thời
+      - Cách ly sự cố giữa các instances
+    - Phù hợp cho:
+      - Ứng dụng cần độ sẵn sàng cao
+      - Ứng dụng yêu cầu cách ly sự cố
+      - Nhóm instances nhỏ
+
+  - **Partition Placement Group**:
+    - EC2 instances phân phối trên nhiều phân vùng trong nhiều AZ
+    - Mỗi phân vùng đại diện cho một rack phần cứng
+    - Lợi ích:
+      - Cách ly sự cố giữa các phân vùng
+      - Có thể mở rộng đến hàng trăm instances
+    - Phù hợp cho:
+      - Ứng dụng dữ liệu lớn (Hadoop, Cassandra, Kafka)
+      - Ứng dụng phân vùng
+      - Cần bảo vệ khỏi sự cố phần cứng
+
+  - **Hướng dẫn sử dụng**:
+    - **Cluster Placement Group**:
+      - Khi cần băng thông mạng cao
+      - Khi cần độ trễ thấp trong cùng AZ
+      - Khi chấp nhận rủi ro về tính sẵn sàng
+
+    - **Spread Placement Group**:
+      - Khi cần giảm thiểu rủi ro thất bại
+      - Khi làm việc với nhóm instances nhỏ
+      - Khi cần độ sẵn sàng cao
+
+    - **Partition Placement Group**:
+      - Khi cần mở rộng quy mô lớn
+      - Khi làm việc với ứng dụng phân vùng
+      - Khi cần bảo vệ khỏi sự cố phần cứng
 
 ### 4. Instance Purchasing Options
 - **EC2 Instance Purchasing Options** (10 minutes)
