@@ -149,10 +149,10 @@ This section covers fundamental EC2 concepts and operations that are essential f
     5. Chọn loại Placement Group phù hợp:
        - Cluster
        - Spread
-       - Partition
+       - Partition   
 		Tiến hành tạo loại 1 ![image](./images/placement_group2.png)
     6. Đặt tên và mô tả cho Placement Group
-    7. Xác nhận tạo
+    7. Xác nhận tạo  
 	Ta có 3 loại 
 	![image](./images/placement_group3.png)
 
