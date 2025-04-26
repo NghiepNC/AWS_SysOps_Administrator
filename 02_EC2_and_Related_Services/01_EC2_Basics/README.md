@@ -150,17 +150,17 @@ This section covers fundamental EC2 concepts and operations that are essential f
        - Cluster
        - Spread
        - Partition
-		Tiến hành tạo loại 1 ![image](/images/placement_group2.png)
+		Tiến hành tạo loại 1 ![image](./images/placement_group2.png)
     6. Đặt tên và mô tả cho Placement Group
     7. Xác nhận tạo
 	Ta có 3 loại 
-	[image](/images/placement_group3.png)
+	![image](./images/placement_group3.png)
 
   - **Thêm Instances vào Placement Group**:
     - Trong quá trình tạo instance mới:
       1. Chọn "Advanced Details"
       2. Tìm phần "Placement Group"
-	  [image](/images/placement_group4.png)
+	  ![image](./images/placement_group4.png)
       3. Chọn Placement Group đã tạo
     - Đối với instance hiện có:
       1. Stop instance
