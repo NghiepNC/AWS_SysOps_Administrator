@@ -131,59 +131,61 @@ This section covers fundamental EC2 concepts and operations that are essential f
       - Khi cần bảo vệ khỏi sự cố phần cứng
 
 - **3.2 EC2 Placement Groups - Hands On** (2 minutes)
-  - **Tổng quan về Placement Groups**:
+  - Xem hướng dẫn thực hành chi tiết tại: [Placement Groups Hands On Guide](./placement_groups_hands_on.md)
+  - Bao gồm:
+    - Quy trình tạo Placement Group
+    - Cách thêm instances vào Placement Group
+    - Kiểm tra và xác minh cấu hình
+    - Các lưu ý quan trọng
 
-  Tạo ở trong phần này
-    ![Placement Groups Overview](./images/placement_group1.png)
-    - Hiển thị ba loại Placement Groups chính
-    - So sánh cách phân bố instances trong mỗi loại
-    - Minh họa mối quan hệ giữa AZ và instances
+### 4. EC2 Shutdown Behavior & Termination Protection (4 minutes)
+  - **Shutdown Behavior (Hành vi khi tắt máy)**:
+    - **Mặc định**:
+      - Khi tắt máy từ bên trong OS: EC2 sẽ dừng (stop)
+      - Instance vẫn tồn tại và có thể khởi động lại
+      - Dữ liệu được bảo toàn
 
+    - **Tùy chọn thay đổi**:
+      - Có thể cấu hình thành terminate (xóa)
+      - EC2 sẽ bị xóa khi tắt máy từ trong OS
+      - Dữ liệu sẽ bị mất nếu không có backup
 
+  - **Termination Protection (Bảo vệ khỏi việc xóa nhầm)**:
+    - **Tính năng**:
+      - Ngăn chặn việc xóa nhầm EC2 qua AWS Console/CLI
+      ![image1](./images/terminal2.png)  
+      Không thể xoá trên Console nè
+      ![image1](./images/terminal3.png)
+      - Có thể bật/tắt tùy theo nhu cầu
+      ![image1](./images/terminal4.png) 
+    
+      Enable->save/cancel  
+      ![image1](./images/terminal_protection.png)  
+    
+      - Không ngăn được việc xóa nếu shutdown behavior là terminate
+      
 
-  - **Quy trình tạo Placement Group**:
-    1. Truy cập AWS Management Console
-    2. Chọn EC2 Dashboard
-    3. Chọn "Placement Groups" từ menu bên trái
-    4. Click "Create Placement Group"
-    5. Chọn loại Placement Group phù hợp:
-       - Cluster
-       - Spread
-       - Partition   
-		Tiến hành tạo loại 1 ![image](./images/placement_group2.png)
-    6. Đặt tên và mô tả cho Placement Group
-    7. Xác nhận tạo  
-	Ta có 3 loại 
-	![image](./images/placement_group3.png)
+    - **Giới hạn**:
+      - Không bảo vệ được khi tắt máy từ bên trong OS
+      - Cần kết hợp với cấu hình shutdown behavior phù hợp
+      - Không ảnh hưởng đến việc xóa tự động theo policy
 
-  - **Thêm Instances vào Placement Group**:
-    - Trong quá trình tạo instance mới:
-      1. Chọn "Advanced Details"
-      2. Tìm phần "Placement Group"
-	  ![image](./images/placement_group4.png)
-      3. Chọn Placement Group đã tạo
-    - Đối với instance hiện có:
-      1. Stop instance
-      2. Modify instance settings
-      3. Chọn Placement Group
-      4. Start instance
-
-  - **Kiểm tra và xác minh**:
-    - Sử dụng AWS CLI:
-      ```bash
-      aws ec2 describe-placement-groups
-      aws ec2 describe-instances --filters "Name=placement-group-name,Values=your-group-name"
-      ```
-    - Kiểm tra trong AWS Console:
-      - Xem thông tin Placement Group
-      - Xác minh vị trí của instances
-      - Kiểm tra hiệu suất mạng
+  - **Demo thực tế**:
+    - Tạo EC2 instance mới
+    - Cấu hình shutdown behavior là terminate
+    ![image1](./images/terminal1.png)
+    - Bật Termination Protection
+    - Thử tắt máy từ bên trong OS (sudo shutdown)
+    ![shutdown](./images/terminal_shutdown1.png)
+    - Kết quả: Instance vẫn bị xóa
+      Shutdown status
+      ![image1](./images/terminal5_1.png) 
 
   - **Lưu ý quan trọng**:
-    - Không thể thay đổi loại Placement Group sau khi tạo
-    - Không thể di chuyển instance giữa các Placement Group
-    - Cần tuân thủ giới hạn về số lượng instances
-    - Đảm bảo AZ phù hợp với yêu cầu
+    - Luôn kiểm tra shutdown behavior trước khi tắt máy
+    - Kết hợp Termination Protection với backup dữ liệu
+    - Đánh giá rủi ro khi thay đổi cấu hình
+    - Ghi lại các thay đổi cấu hình quan trọng
 
 ### 4. Instance Purchasing Options
 - **EC2 Instance Purchasing Options** (10 minutes)
